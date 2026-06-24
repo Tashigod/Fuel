@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crude Oil Products Order App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <h1>Crude Oil Products Order App</h1>
+    </header>
+    <main>
+        <section id="products">
+            <h2>Select Products</h2>
+            <div class="product" data-name="Petrol" data-price=" 1100">
+                <h3>Petrol</h3>
+                <p>Price:  ₦1100 per liter</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Kerosene" data-price="1500">
+                <h3>Kerosene</h3>
+                <p>Price:  ₦1500 per liter</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Diesel" data-price=" 1250">
+                <h3>Diesel</h3>
+                <p>Price:  ₦1250 per liter</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Cooking Gas" data-price=" 2000">
+                <h3>Cooking Gas</h3>
+                <p>Price:  ₦2000 per kg</p>
+                <input type="number" min="1" value="1" class="quantity">
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
+        <!-- ... (rest of the file remains the same) -->
+<section id="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p>Total: ₦<span id="total">0.00</span></p>
+    <div id="address-form" style="display: none;">
+        <h3>Delivery Address</h3>
+        <input type="text" id="street" placeholder="Street Address" required>
+        <input type="text" id="city" placeholder="City" required>
+        <input type="text" id="state" placeholder="State" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required>
+        <input type="email" id="email" placeholder="Email" required>  <!-- New: For Paystack -->
+    </div>
+    <button id="checkout">Checkout</button>
+</section>
+<!-- ... (rest of the file remains the same) -->
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

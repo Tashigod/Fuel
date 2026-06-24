@@ -1,0 +1,16 @@
+SELECT
+  o.id,
+  jt.name,
+  jt.price,
+  jt.quantity,
+  o.total,
+  o.date
+FROM orders o,
+JSON_TABLE(
+  o.items,
+  '$[*]' COLUMNS (
+    name VARCHAR(100) PATH '$.name',
+    price DECIMAL(10,2) PATH '$.price',
+    quantity INT PATH '$.quantity'
+  )
+) AS jt;
