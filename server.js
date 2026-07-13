@@ -207,6 +207,69 @@ app.get('/api/orders', async (req, res) => {
     }
 });
 
+/* =========================
+   GET PRODUCTS
+========================= */
+app.get('/api/products', async (req, res) => {
+
+    try {
+
+        const [rows] = await db.execute(
+            'SELECT * FROM products ORDER BY id'
+        );
+
+        res.json(rows);
+
+    } catch (error) {
+
+        console.error('Products fetch error:', error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch products'
+        });
+
+    }
+
+});
+
+/* =========================
+   UPDATE PRODUCT PRICE
+========================= */
+app.put('/api/products/:id', async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { price } = req.body;
+
+        await db.execute(
+            'UPDATE products SET price = ? WHERE id = ?',
+            [
+                price,
+                id
+            ]
+        );
+
+        res.json({
+            success: true,
+            message: 'Product updated successfully'
+        });
+
+    } catch (error) {
+
+        console.error('Product update error:', error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update product'
+        });
+
+    }
+
+});
+
+
 // =========================
 // UPDATE ORDER STATUS
 // =========================
