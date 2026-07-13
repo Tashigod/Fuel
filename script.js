@@ -1,21 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const cartItems = document.getElementById('cart-items');
     const totalSpan = document.getElementById('total');
     const checkoutBtn = document.getElementById('checkout');
     const addressForm = document.getElementById('address-form');
+
+    // Slide cart elements
+    const cartButton = document.getElementById('cart-button');
+    const cartPanel = document.getElementById('cart-panel');
+    const closeCart = document.getElementById('close-cart');
+    const overlay = document.getElementById('overlay');
+    const cartCount = document.getElementById('cart-count');
 
     let cart = [];
     let total = 0;
 
     const API_BASE = 'https://fuel-xxa4.onrender.com';
 
-    console.log('Script loaded');
+    console.log("Script Loaded");
 
-    // Add to cart
+    // ===============================
+    // Open / Close Cart
+    // ===============================
+
+    cartButton.addEventListener('click', () => {
+        cartPanel.classList.add('open');
+        overlay.classList.add('show');
+    });
+
+    closeCart.addEventListener('click', () => {
+        cartPanel.classList.remove('open');
+        overlay.classList.remove('show');
+    });
+
+    overlay.addEventListener('click', () => {
+        cartPanel.classList.remove('open');
+        overlay.classList.remove('show');
+    });
+
+    // ===============================
+    // Add To Cart
+    // ===============================
+
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
-    addToCartButtons.forEach((button) => {
+    addToCartButtons.forEach(button => {
+
         button.addEventListener('click', (e) => {
+
             const productDiv = e.target.closest('.product');
 
             if (!productDiv) return;
@@ -29,99 +61,153 @@ document.addEventListener('DOMContentLoaded', () => {
             if (existingItem) {
                 existingItem.quantity += quantity;
             } else {
-                cart.push({ name, price, quantity });
+                cart.push({
+                    name,
+                    price,
+                    quantity
+                });
             }
 
             updateCart();
+
+            // Automatically open cart
+            cartPanel.classList.add('open');
+            overlay.classList.add('show');
+
         });
+
     });
 
-    // Update cart UI
+    // ===============================
+    // Update Cart
+    // ===============================
+
     function updateCart() {
-    cartItems.innerHTML = '';
-    total = 0;
 
-    cart.forEach((item, index) => {
+        cartItems.innerHTML = "";
 
-        const subtotal = item.price * item.quantity;
-        total += subtotal;
+        total = 0;
 
-        const li = document.createElement('li');
+        cart.forEach((item, index) => {
 
-        li.innerHTML = `
-            <div class="cart-item">
-                <div class="cart-name">${item.name}</div>
+            const subtotal = item.price * item.quantity;
 
-                <div class="cart-controls">
+            total += subtotal;
 
-                    <button class="decrease" data-index="${index}">
-                        -
-                    </button>
+            const li = document.createElement("li");
 
-                    <span class="qty">${item.quantity}</span>
+            li.innerHTML = `
 
-                    <button class="increase" data-index="${index}">
-                        +
-                    </button>
+                <div class="cart-item">
 
-                    <span class="subtotal">
-                        ₦${subtotal.toLocaleString()}
-                    </span>
+                    <div class="cart-name">
+                        ${item.name}
+                    </div>
 
-                    <button class="remove-item" data-index="${index}">
-                        ❌
-                    </button>
+                    <div class="cart-controls">
+
+                        <button class="decrease" data-index="${index}">
+                            -
+                        </button>
+
+                        <span class="qty">
+                            ${item.quantity}
+                        </span>
+
+                        <button class="increase" data-index="${index}">
+                            +
+                        </button>
+
+                        <span class="subtotal">
+                            ₦${subtotal.toLocaleString()}
+                        </span>
+
+                        <button class="remove-item" data-index="${index}">
+                            ❌
+                        </button>
+
+                    </div>
 
                 </div>
-            </div>
-        `;
 
-        cartItems.appendChild(li);
-    });
+            `;
 
-    totalSpan.textContent = total.toLocaleString();
+            cartItems.appendChild(li);
 
-    addressForm.style.display = cart.length > 0 ? 'block' : 'none';
-
-    // Increase quantity
-    document.querySelectorAll(".increase").forEach(btn => {
-        btn.addEventListener("click", () => {
-            cart[btn.dataset.index].quantity++;
-            updateCart();
         });
-    });
 
-    // Decrease quantity
-    document.querySelectorAll(".decrease").forEach(btn => {
-        btn.addEventListener("click", () => {
+        totalSpan.textContent = total.toLocaleString();
 
-            const item = cart[btn.dataset.index];
+        addressForm.style.display =
+            cart.length > 0 ? "block" : "none";
 
-            if(item.quantity > 1){
-                item.quantity--;
-            }else{
-                cart.splice(btn.dataset.index,1);
-            }
+        // Update badge
+        cartCount.textContent =
+            cart.reduce((sum, item) => sum + item.quantity, 0);
 
-            updateCart();
+        // Increase
+        document.querySelectorAll(".increase").forEach(btn => {
+
+            btn.onclick = () => {
+
+                cart[btn.dataset.index].quantity++;
+
+                updateCart();
+
+            };
+
         });
-    });
 
-    // Remove item
-    document.querySelectorAll(".remove-item").forEach(btn => {
-        btn.addEventListener("click", () => {
-            cart.splice(btn.dataset.index,1);
-            updateCart();
+        // Decrease
+        document.querySelectorAll(".decrease").forEach(btn => {
+
+            btn.onclick = () => {
+
+                const item = cart[btn.dataset.index];
+
+                if (item.quantity > 1) {
+
+                    item.quantity--;
+
+                } else {
+
+                    cart.splice(btn.dataset.index, 1);
+
+                }
+
+                updateCart();
+
+            };
+
         });
-    });
-}
+
+        // Remove
+        document.querySelectorAll(".remove-item").forEach(btn => {
+
+            btn.onclick = () => {
+
+                cart.splice(btn.dataset.index, 1);
+
+                updateCart();
+
+            };
+
+        });
+
+    }
+
+    // ===============================
     // Checkout
+    // ===============================
+
     checkoutBtn.addEventListener('click', async () => {
-        console.log('Checkout clicked');
 
         if (cart.length === 0) {
-            alert('Your cart is empty!');
+
+            alert("Your cart is empty!");
+
             return;
+
         }
 
         const street = document.getElementById('street').value.trim();
@@ -131,46 +217,99 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('email').value.trim();
 
         if (!street || !city || !state || !phone || !email) {
-            alert('Please fill in all fields.');
+
+            alert("Please fill in all fields.");
+
             return;
+
         }
 
         try {
-            // 1. Store order in backend
+
             const orderResponse = await fetch(`${API_BASE}/store-order`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json"
+
+                },
+
                 body: JSON.stringify({
+
                     cart,
+
                     total,
-                    address: { street, city, state, phone, email }
+
+                    address: {
+
+                        street,
+
+                        city,
+
+                        state,
+
+                        phone,
+
+                        email
+
+                    }
+
                 })
+
             });
 
             const orderData = await orderResponse.json();
-            console.log('Order stored:', orderData);
 
-            // 2. Initialize Paystack payment
+            console.log(orderData);
+
             const paymentResponse = await fetch(`${API_BASE}/initialize-payment`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json"
+
+                },
+
                 body: JSON.stringify({
+
                     amount: total,
-                    email: email
+
+                    email
+
                 })
+
             });
 
             const paymentData = await paymentResponse.json();
 
             if (paymentData.authorization_url) {
-                window.location.href = paymentData.authorization_url;
+
+                cartPanel.classList.remove("open");
+                overlay.classList.remove("show");
+
+                window.location.href =
+                    paymentData.authorization_url;
+
             } else {
-                alert('Payment failed to initialize');
+
+                alert("Payment failed to initialize.");
+
             }
 
-        } catch (error) {
-            console.error('Network error:', error);
-            alert('Network error. Please try again.');
         }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert("Network error.");
+
+        }
+
     });
+
 });
