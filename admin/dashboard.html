@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Admin Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <h1>Fuel Admin Dashboard</h1>
+
+    <p>Welcome,
+        <strong id="adminName"></strong>
+    </p>
+
+    <br>
+
+    <button id="logoutBtn">
+        Logout
+    </button>
+
+</div>
+
+<script>
+
+const token = localStorage.getItem("adminToken");
+
+if(!token){
+    window.location.href = "login.html";
+}
+
+document.getElementById("adminName").textContent =
+localStorage.getItem("adminUsername");
+
+document.getElementById("logoutBtn").onclick = () => {
+
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUsername");
+
+    window.location.href = "login.html";
+
+};
+
+</script>
+
+</body>
+</html>
