@@ -2,40 +2,13 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
 }
 
 body{
-    background:#f4f7fb;
-    color:#222;
-}
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-    background:#0f172a;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 40px;
-}
-
-.topbar button{
-    margin-left:20px;
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-}
-
-.topbar button:hover{
-    background:#dc2626;
+    background:#eef3f9;
+    color:#1f2937;
+    min-height:100vh;
 }
 
 /* =========================
@@ -44,8 +17,52 @@ body{
 
 .dashboard{
     width:95%;
-    max-width:1400px;
-    margin:30px auto;
+    max-width:1450px;
+    margin:35px auto;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+    padding:22px 35px;
+    border-radius:18px;
+    margin-bottom:30px;
+    box-shadow:0 12px 30px rgba(37,99,235,.18);
+}
+
+.topbar h1{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:.5px;
+}
+
+.topbar strong{
+    color:#fde68a;
+}
+
+.topbar button{
+    margin-left:18px;
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.topbar button:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
 }
 
 /* =========================
@@ -54,94 +71,167 @@ body{
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
     margin-bottom:35px;
 }
 
 .card{
     background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.25s;
+    border-top:5px solid #2563eb;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 16px 35px rgba(0,0,0,.12);
+}
+
+.card:nth-child(2){
+    border-top-color:#16a34a;
+}
+
+.card:nth-child(3){
+    border-top-color:#f59e0b;
+}
+
+.card:nth-child(4){
+    border-top-color:#22c55e;
+}
+
+.card:nth-child(5){
+    border-top-color:#8b5cf6;
 }
 
 .card h3{
-    color:#666;
+    color:#6b7280;
+    font-size:15px;
     margin-bottom:15px;
+    font-weight:600;
 }
 
 .card h2{
-    font-size:34px;
-    color:#2563eb;
+    font-size:36px;
+    color:#111827;
+    font-weight:700;
 }
 
 /* =========================
-   ORDERS TABLE
+   SECTIONS
 ========================= */
 
-.orders{
+.orders,
+.products{
     background:white;
-    border-radius:15px;
-    padding:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    margin-bottom:35px;
 }
 
-.orders h2{
+.orders h2,
+.products h2{
     margin-bottom:20px;
+    color:#1e3a8a;
+    font-size:24px;
 }
+
+/* =========================
+   TABLES
+========================= */
 
 table{
     width:100%;
     border-collapse:collapse;
+    overflow:hidden;
+    border-radius:12px;
+}
+
+thead{
+    position:sticky;
+    top:0;
 }
 
 th{
     background:#2563eb;
     color:white;
-    padding:15px;
+    padding:16px;
     text-align:left;
+    font-size:15px;
+    font-weight:600;
 }
 
 td{
-    padding:15px;
-    border-bottom:1px solid #eee;
+    padding:16px;
+    border-bottom:1px solid #edf2f7;
+    vertical-align:middle;
 }
 
-tr:hover{
-    background:#f8fafc;
+tbody tr:nth-child(even){
+    background:#fafcff;
+}
+
+tbody tr:hover{
+    background:#eaf3ff;
+    transition:.2s;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input[type="number"],
+select{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+    transition:.2s;
+    background:white;
+}
+
+input[type="number"]:focus,
+select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.view-btn,
+.save-btn{
+    border:none;
+    border-radius:9px;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    transition:.25s;
 }
 
 .view-btn{
     background:#2563eb;
-    color:white;
-    border:none;
-    padding:8px 14px;
-    border-radius:6px;
-    cursor:pointer;
 }
 
 .view-btn:hover{
     background:#1d4ed8;
+    transform:translateY(-2px);
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:800px){
-
-table{
-    display:block;
-    overflow-x:auto;
+.save-btn{
+    background:#16a34a;
 }
 
-.topbar{
-    flex-direction:column;
-    gap:15px;
-    text-align:center;
-}
-
+.save-btn:hover{
+    background:#15803d;
+    transform:translateY(-2px);
 }
 
 /* =========================
@@ -149,102 +239,83 @@ table{
 ========================= */
 
 .modal{
-
     display:none;
-
     position:fixed;
-
     inset:0;
-
-    background:rgba(0,0,0,.5);
-
-    z-index:2000;
-
+    background:rgba(15,23,42,.65);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     justify-content:center;
-
     align-items:center;
-
+    z-index:9999;
+    animation:fadeIn .25s ease;
 }
-
 
 .modal.show{
-
     display:flex;
-
 }
-
 
 .modal-content{
-
+    width:92%;
+    max-width:650px;
     background:white;
-
-    width:90%;
-
-    max-width:600px;
-
-    padding:30px;
-
-    border-radius:15px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-
+    border-radius:20px;
+    padding:35px;
     position:relative;
-
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+    animation:slideUp .25s ease;
 }
 
+.modal-content h2{
+    color:#2563eb;
+    margin-bottom:20px;
+}
 
 #closeModal{
-
     position:absolute;
-
-    top:15px;
-
-    right:20px;
-
-    font-size:22px;
-
-    cursor:pointer;
-
+    top:18px;
+    right:22px;
+    font-size:26px;
     color:#ef4444;
-
+    cursor:pointer;
+    transition:.2s;
 }
 
+#closeModal:hover{
+    transform:rotate(90deg);
+}
 
 #orderDetails{
-
-    margin-top:20px;
-
     line-height:1.8;
-
+    color:#374151;
 }
 
+#orderDetails h3{
+    color:#1e3a8a;
+    margin:18px 0 10px;
+}
+
+#orderDetails p{
+    margin:8px 0;
+}
 
 .order-products{
-
-    margin-top:15px;
-
-    padding:15px;
-
     background:#f8fafc;
-
-    border-radius:10px;
-
+    border-radius:12px;
+    padding:18px;
+    margin:18px 0;
+    border:1px solid #e5e7eb;
 }
-
 
 .order-products div{
-
-    padding:8px 0;
-
-    border-bottom:1px solid #eee;
-
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #e5e7eb;
 }
 
-
 .order-products div:last-child{
-
     border-bottom:none;
-
 }
 
 /* =========================
@@ -252,135 +323,416 @@ table{
 ========================= */
 
 .login-container{
-
-    width:90%;
-
-    max-width:400px;
-
-    margin:100px auto;
-
+    width:92%;
+    max-width:420px;
+    margin:90px auto;
     background:white;
-
-    padding:35px;
-
-    border-radius:15px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
+    padding:45px;
+    border-radius:22px;
     text-align:center;
-
+    box-shadow:0 20px 50px rgba(0,0,0,.12);
 }
-
 
 .login-container h1{
-
-    margin-bottom:30px;
-
     color:#2563eb;
-
+    font-size:32px;
+    margin-bottom:35px;
 }
-
 
 .login-container input{
-
     width:100%;
-
-    padding:12px;
-
-    margin-bottom:15px;
-
-    border:1px solid #ccc;
-
-    border-radius:8px;
-
+    padding:14px;
+    margin-bottom:18px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
     font-size:16px;
-
+    transition:.2s;
 }
 
+.login-container input:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}
 
 .login-container button{
-
     width:100%;
-
-    padding:13px;
-
-    border:none;
-
-    border-radius:8px;
-
+    padding:15px;
     background:#2563eb;
-
     color:white;
-
-    cursor:pointer;
-
+    border:none;
+    border-radius:10px;
     font-size:16px;
-
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
 }
-
 
 .login-container button:hover{
-
     background:#1d4ed8;
-
+    transform:translateY(-2px);
 }
-
 
 #message{
-
-    margin-top:15px;
-
+    margin-top:18px;
     color:#ef4444;
-
+    font-weight:600;
 }
+
 /* =========================
    PRODUCT MANAGEMENT
 ========================= */
 
-.products{
-
-    background:white;
-
-    border-radius:15px;
-
-    padding:25px;
-
-    margin-top:35px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
+.products input{
+    width:140px;
+    text-align:center;
+    font-weight:600;
 }
 
-.products input{
+.products td{
+    vertical-align:middle;
+}
 
-    width:120px;
-
-    padding:8px;
-
-    border:1px solid #ccc;
-
-    border-radius:6px;
-
+.status-select{
+    min-width:170px;
+    background:#f8fafc;
+    font-weight:600;
 }
 
 .save-btn{
+    min-width:90px;
+}
 
-    background:#16a34a;
+/* =========================
+   SCROLLBAR
+========================= */
 
-    color:white;
+::-webkit-scrollbar{
+    width:10px;
+}
 
-    border:none;
+::-webkit-scrollbar-track{
+    background:#edf2f7;
+}
 
-    padding:8px 16px;
+::-webkit-scrollbar-thumb{
+    background:#2563eb;
+    border-radius:10px;
+}
 
-    border-radius:6px;
+::-webkit-scrollbar-thumb:hover{
+    background:#1d4ed8;
+}
 
-    cursor:pointer;
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
 
 }
 
-.save-btn:hover{
+@keyframes slideUp{
 
-    background:#15803d;
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width:1000px){
+
+.stats{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.topbar{
+    flex-direction:column;
+    gap:18px;
+    text-align:center;
+}
+
+.topbar button{
+    margin-left:0;
+    margin-top:10px;
+}
+
+}
+
+@media (max-width:768px){
+
+.dashboard{
+    width:98%;
+    margin:20px auto;
+}
+
+.stats{
+    grid-template-columns:1fr;
+}
+
+.orders,
+.products{
+    padding:18px;
+}
+
+table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+}
+
+.modal-content{
+    width:96%;
+    padding:25px;
+}
+
+.login-container{
+    padding:30px;
+}
+
+.card h2{
+    font-size:30px;
+}
+
+}
+
+@media (max-width:500px){
+
+.topbar h1{
+    font-size:22px;
+}
+
+.card{
+    padding:20px;
+}
+
+.card h2{
+    font-size:26px;
+}
+
+.view-btn,
+.save-btn{
+    width:100%;
+}
+
+.products input{
+    width:100%;
+}
+
+}
+
+/* =========================
+   STATUS COLORS
+========================= */
+
+.status-select{
+
+    border:2px solid transparent;
+    transition:.25s;
+
+}
+
+.status-select:focus{
+
+    border-color:#2563eb;
+
+}
+
+/* Optional status row colors */
+
+.status-pending{
+
+    color:#d97706;
+    font-weight:700;
+
+}
+
+.status-processing{
+
+    color:#2563eb;
+    font-weight:700;
+
+}
+
+.status-out{
+
+    color:#ea580c;
+    font-weight:700;
+
+}
+
+.status-delivered{
+
+    color:#16a34a;
+    font-weight:700;
+
+}
+
+.status-cancelled{
+
+    color:#dc2626;
+    font-weight:700;
+
+}
+
+/* =========================
+   TABLE POLISH
+========================= */
+
+tbody tr{
+
+    transition:.25s;
+
+}
+
+tbody tr:hover{
+
+    transform:scale(1.01);
+
+}
+
+th:first-child{
+
+    border-top-left-radius:10px;
+
+}
+
+th:last-child{
+
+    border-top-right-radius:10px;
+
+}
+
+/* =========================
+   BUTTON EFFECTS
+========================= */
+
+.view-btn,
+.save-btn,
+.topbar button,
+.login-container button{
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+.view-btn:active,
+.save-btn:active,
+.topbar button:active,
+.login-container button:active{
+
+    transform:scale(.97);
+
+}
+
+/* =========================
+   INPUT POLISH
+========================= */
+
+input,
+select{
+
+    transition:.25s;
+
+}
+
+input:hover,
+select:hover{
+
+    border-color:#93c5fd;
+
+}
+
+/* =========================
+   SECTION TITLES
+========================= */
+
+.orders h2,
+.products h2{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+
+}
+
+.orders h2::before{
+
+    content:"📦";
+
+}
+
+.products h2::before{
+
+    content:"⛽";
+
+}
+
+/* =========================
+   CARD NUMBER ANIMATION
+========================= */
+
+.card{
+
+    overflow:hidden;
+    position:relative;
+
+}
+
+.card::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.4),
+        transparent
+    );
+
+    transition:.7s;
+
+}
+
+.card:hover::after{
+
+    left:120%;
+
+}
+
+/* =========================
+   FOOTER SPACING
+========================= */
+
+.products{
+
+    margin-bottom:40px;
 
 }
