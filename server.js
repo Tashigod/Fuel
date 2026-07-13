@@ -148,19 +148,62 @@ app.get('/payment-success', async (req, res) => {
 ========================= */
 app.get('/api/orders', async (req, res) => {
     try {
-        const [rows] = await db.execute('SELECT * FROM orders ORDER BY id DESC');
 
-        res.json(
-            rows.map(row => ({
-                ...row,
-                items: JSON.parse(row.items),
-                address: JSON.parse(row.address)
-            }))
+        const [rows] = await db.execute(
+            'SELECT * FROM orders ORDER BY id DESC'
         );
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch orders' });
+
+        const orders = rows.map(row => {
+
+            let items = row.items;
+            let address = row.address;
+
+
+            // Convert only if they are strings
+
+            if (typeof items === "string") {
+
+                try {
+                    items = JSON.parse(items);
+                } catch {
+                    items = [];
+                }
+
+            }
+
+
+            if (typeof address === "string") {
+
+                try {
+                    address = JSON.parse(address);
+                } catch {
+                    address = {};
+                }
+
+            }
+
+
+            return {
+                ...row,
+                items,
+                address
+            };
+
+        });
+
+
+        res.json(orders);
+
+
+    } catch(error){
+
+        console.error("Fetch orders error:", error);
+
+        res.status(500).json({
+            error:"Failed to fetch orders"
+        });
+
     }
 });
 /* =========================
