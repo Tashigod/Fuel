@@ -206,6 +206,51 @@ app.get('/api/orders', async (req, res) => {
 
     }
 });
+
+// =========================
+// UPDATE ORDER STATUS
+// =========================
+
+app.put('/api/orders/:id/status', async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { status } = req.body;
+
+
+        await db.execute(
+            'UPDATE orders SET status = ? WHERE id = ?',
+            [
+                status,
+                id
+            ]
+        );
+
+
+        res.json({
+            success:true,
+            message:"Order status updated"
+        });
+
+
+    } catch(error){
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        res.status(500).json({
+            success:false,
+            message:"Failed to update status"
+        });
+
+    }
+
+});
+
 /* =========================
    ADMIN LOGIN
 ========================= */

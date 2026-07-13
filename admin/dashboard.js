@@ -166,8 +166,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 <td>
-                    ${order.status || "pending"}
-                </td>
+
+                <select 
+                class="status-select"
+                data-id="${order.id}">
+
+                <option ${order.status=="pending"?"selected":""}>
+                pending
+                </option>
+
+                <option ${order.status=="processing"?"selected":""}>
+                processing
+                </option>
+
+                <option ${order.status=="out for delivery"?"selected":""}>
+                out for delivery
+                </option>
+
+                <option ${order.status=="delivered"?"selected":""}>
+                delivered
+                </option>
+
+                <option ${order.status=="cancelled"?"selected":""}>
+                cancelled
+                </option>
+
+                </select>
+
+                </td>     
 
 
                 <td>
@@ -210,6 +236,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     }
+
+    document.querySelectorAll(".status-select")
+.forEach(select => {
+
+
+select.addEventListener("change", async ()=>{
+
+
+const id = select.dataset.id;
+
+
+try{
+
+
+await fetch(
+`${API_BASE}/api/orders/${id}/status`,
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+status:select.value
+
+})
+
+}
+
+);
+
+
+alert("Status updated");
+
+
+}
+
+
+catch(error){
+
+console.error(error);
+
+alert("Update failed");
+
+}
+
+
+});
+
+
+});
 
 
 
