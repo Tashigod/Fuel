@@ -3,9 +3,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const Paystack = require('paystack-api')(process.env.PAYSTACK_SECRET);
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'change_this_to_a_long_random_secret';
 
 app.use(cors({
     origin: '*'
@@ -158,6 +161,61 @@ app.get('/api/orders', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+});
+/* =========================
+   ADMIN LOGIN
+========================= */
+app.post('/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const [rows] = await db.execute(
+            'SELECT * FROM admins WHERE username = ?',
+            [username]
+        );
+
+        if (rows.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid username or password'
+            });
+        }
+
+        const admin = rows[0];
+
+        const passwordMatch = await bcrypt.compare(password, admin.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid username or password'
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                id: admin.id,
+                username: admin.username
+            },
+            JWT_SECRET,
+            {
+                expiresIn: '24h'
+            }
+        );
+
+        res.json({
+            success: true,
+            token,
+            username: admin.username
+        });
+
+    } catch (error) {
+        console.error('Admin login error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
     }
 });
 
