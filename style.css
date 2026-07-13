@@ -98,3 +98,23 @@ main {
     max-width: 100%;
     font-size: 16px;
 }
+#cart-items li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.remove-item{
+    background:#e53935;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.remove-item:hover{
+    background:#c62828;
+}
