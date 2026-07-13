@@ -130,17 +130,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayProducts(products) {
 
-    console.log("Products:", products);
-    console.log("productsTable:", productsTable);
+        productsTable.innerHTML = "";
 
-    productsTable.innerHTML = `
-        <tr>
-            <td colspan="4">TEST SUCCESS</td>
-        </tr>
-    `;
+        products.forEach(product => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>${product.name}</td>
+
+                <td>${product.unit}</td>
+
+                <td>
+
+                    <input
+                        type="number"
+                        id="price-${product.id}"
+                        value="${product.price}"
+                    >
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="save-btn"
+                        data-id="${product.id}">
+
+                        Save
+
+                    </button>
+
+                </td>
+
+            `;
+
+            productsTable.appendChild(row);
+
+        });
+
+        document.querySelectorAll(".save-btn").forEach(button => {
+
+            button.addEventListener("click", async () => {
+
+                const id = button.dataset.id;
+
+                const price =
+                    document.getElementById(`price-${id}`).value;
+
+                try {
+
+                    const response = await fetch(
+                        `${API_BASE}/api/products/${id}`,
+                        {
+                            method:"PUT",
+
+                            headers:{
+                                "Content-Type":"application/json",
+                                Authorization:`Bearer ${token}`
+                            },
+
+                            body:JSON.stringify({
+                                price
+                            })
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if(!response.ok || !data.success){
+                        throw new Error(data.message);
+                    }
+
+                    alert("Product updated.");
+
+                    loadProducts();
+
+                }catch(error){
+
+                    console.error(error);
+
+                    alert("Update failed.");
+
+                }
+
+            });
+
+        });
 
 }
-
 
 
 
@@ -456,6 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     loadOrders();
+    loadProducts();
 
 
 });
