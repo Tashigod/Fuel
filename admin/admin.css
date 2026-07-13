@@ -246,3 +246,90 @@ table{
     border-bottom:none;
 
 }
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-container{
+
+    width:90%;
+
+    max-width:400px;
+
+    margin:100px auto;
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:15px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    text-align:center;
+
+}
+
+
+.login-container h1{
+
+    margin-bottom:30px;
+
+    color:#2563eb;
+
+}
+
+
+.login-container input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+}
+
+
+.login-container button{
+
+    width:100%;
+
+    padding:13px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+
+.login-container button:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+#message{
+
+    margin-top:15px;
+
+    color:#ef4444;
+
+}
