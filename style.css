@@ -118,3 +118,55 @@ main {
 .remove-item:hover{
     background:#c62828;
 }
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+}
+
+.cart-name{
+    font-weight:bold;
+    width:180px;
+}
+
+.cart-controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.cart-controls button{
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.increase{
+    background:#28a745;
+    color:white;
+}
+
+.decrease{
+    background:#ffc107;
+}
+
+.remove-item{
+    background:#dc3545;
+    color:white;
+}
+
+.qty{
+    width:25px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.subtotal{
+    width:120px;
+    text-align:right;
+    font-weight:bold;
+}
