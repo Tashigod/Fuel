@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
 
     function displayProducts(products) {
+        console.log(products);
 
         productsTable.innerHTML = "";
 
