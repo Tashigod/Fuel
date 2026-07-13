@@ -42,18 +42,38 @@ document.addEventListener('DOMContentLoaded', () => {
     total = 0;
 
     cart.forEach((item, index) => {
+
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+
         const li = document.createElement('li');
 
-        total += item.price * item.quantity;
-
         li.innerHTML = `
-            <span>
-                ${item.name} x${item.quantity} - ₦${(item.price * item.quantity).toLocaleString()}
-            </span>
+            <div class="cart-item">
+                <div class="cart-name">${item.name}</div>
 
-            <button class="remove-item" data-index="${index}">
-                ❌ Remove
-            </button>
+                <div class="cart-controls">
+
+                    <button class="decrease" data-index="${index}">
+                        -
+                    </button>
+
+                    <span class="qty">${item.quantity}</span>
+
+                    <button class="increase" data-index="${index}">
+                        +
+                    </button>
+
+                    <span class="subtotal">
+                        ₦${subtotal.toLocaleString()}
+                    </span>
+
+                    <button class="remove-item" data-index="${index}">
+                        ❌
+                    </button>
+
+                </div>
+            </div>
         `;
 
         cartItems.appendChild(li);
@@ -63,13 +83,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addressForm.style.display = cart.length > 0 ? 'block' : 'none';
 
-    // Remove item button
-    document.querySelectorAll('.remove-item').forEach(button => {
-        button.addEventListener('click', () => {
-            const index = parseInt(button.dataset.index);
+    // Increase quantity
+    document.querySelectorAll(".increase").forEach(btn => {
+        btn.addEventListener("click", () => {
+            cart[btn.dataset.index].quantity++;
+            updateCart();
+        });
+    });
 
-            cart.splice(index, 1);
+    // Decrease quantity
+    document.querySelectorAll(".decrease").forEach(btn => {
+        btn.addEventListener("click", () => {
 
+            const item = cart[btn.dataset.index];
+
+            if(item.quantity > 1){
+                item.quantity--;
+            }else{
+                cart.splice(btn.dataset.index,1);
+            }
+
+            updateCart();
+        });
+    });
+
+    // Remove item
+    document.querySelectorAll(".remove-item").forEach(btn => {
+        btn.addEventListener("click", () => {
+            cart.splice(btn.dataset.index,1);
             updateCart();
         });
     });
