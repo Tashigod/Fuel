@@ -1,51 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuel Admin Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="admin.css">
+<title>Fuel Admin Dashboard</title>
+
+<link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
-<div class="login-container">
+<div class="dashboard">
 
-    <h1>Fuel Admin Dashboard</h1>
+    <header class="topbar">
 
-    <p>Welcome,
-        <strong id="adminName"></strong>
-    </p>
+        <h1>Fuel Admin Dashboard</h1>
 
-    <br>
+        <div>
 
-    <button id="logoutBtn">
-        Logout
-    </button>
+            Welcome,
+            <strong id="adminName"></strong>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+    <section class="stats">
+
+        <div class="card">
+            <h3>Total Orders</h3>
+            <h2 id="totalOrders">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <h2 id="totalRevenue">₦0</h2>
+        </div>
+
+    </section>
+
+    <section class="orders">
+
+        <h2>Orders</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th></th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="ordersTable">
+
+            </tbody>
+
+        </table>
+
+    </section>
 
 </div>
 
-<script>
-
-const token = localStorage.getItem("adminToken");
-
-if(!token){
-    window.location.href = "login.html";
-}
-
-document.getElementById("adminName").textContent =
-localStorage.getItem("adminUsername");
-
-document.getElementById("logoutBtn").onclick = () => {
-
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUsername");
-
-    window.location.href = "login.html";
-
-};
-
-</script>
+<script src="dashboard.js"></script>
 
 </body>
 </html>
