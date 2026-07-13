@@ -260,67 +260,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.allOrders = orders;
 
+                // =========================
+        // STATUS CHANGE EVENTS
+        // =========================
+
+        document.querySelectorAll(".status-select").forEach(select => {
+
+            select.addEventListener("change", async () => {
+
+                const id = select.dataset.id;
+
+                try {
+
+                    const response = await fetch(
+                        `${API_BASE}/api/orders/${id}/status`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                status: select.value
+                            })
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || "Update failed");
+                    }
+
+                    // Reload orders so statistics and table update
+                    loadOrders();
+
+                } catch (error) {
+
+                    console.error(error);
+                    alert("Failed to update status.");
+
+                }
+
+            });
+
+        });
+
 
     }
-
-    document.querySelectorAll(".status-select")
-.forEach(select => {
-
-
-select.addEventListener("change", async ()=>{
-
-
-const id = select.dataset.id;
-
-
-try{
-
-
-await fetch(
-`${API_BASE}/api/orders/${id}/status`,
-{
-
-method:"PUT",
-
-headers:{
-
-"Content-Type":"application/json",
-
-Authorization:`Bearer ${token}`
-
-},
-
-body:JSON.stringify({
-
-status:select.value
-
-})
-
-}
-
-);
-
-
-alert("Status updated");
-
-
-}
-
-
-catch(error){
-
-console.error(error);
-
-alert("Update failed");
-
-}
-
-
-});
-
-
-});
-
+        
 
 
 
