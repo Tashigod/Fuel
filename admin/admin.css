@@ -333,3 +333,54 @@ table{
     color:#ef4444;
 
 }
+/* =========================
+   PRODUCT MANAGEMENT
+========================= */
+
+.products{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-top:35px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.products input{
+
+    width:120px;
+
+    padding:8px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+.save-btn{
+
+    background:#16a34a;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 16px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.save-btn:hover{
+
+    background:#15803d;
+
+}

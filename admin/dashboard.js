@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
 
     const ordersTable = document.getElementById("ordersTable");
+    const productsTable = document.getElementById("productsTable");
 
     const totalOrders = document.getElementById("totalOrders");
     const totalRevenue = document.getElementById("totalRevenue");
@@ -96,7 +97,149 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     }
+    // =========================
+    // LOAD PRODUCTS
+    // =========================
 
+    async function loadProducts() {
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/api/products`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const products = await response.json();
+
+            displayProducts(products);
+
+        } catch (error) {
+
+            console.error("Failed to load products:", error);
+
+        }
+
+    }
+
+
+
+    // =========================
+    // DISPLAY PRODUCTS
+    // =========================
+
+    function displayProducts(products) {
+
+        productsTable.innerHTML = "";
+
+        products.forEach(product => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>${product.name}</td>
+
+                <td>${product.unit}</td>
+
+                <td>
+
+                    <input
+                        type="number"
+                        value="${product.price}"
+                        id="price-${product.id}"
+                    >
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="save-btn"
+                        data-id="${product.id}">
+
+                        Save
+
+                    </button>
+
+                </td>
+
+            `;
+
+            productsTable.appendChild(row);
+
+        });
+
+
+
+
+        // Save buttons
+
+        document.querySelectorAll(".save-btn").forEach(button => {
+
+            button.addEventListener("click", async () => {
+
+                const id = button.dataset.id;
+
+                const price = document.getElementById(`price-${id}`).value;
+
+                try {
+
+                    const response = await fetch(
+
+                        `${API_BASE}/api/products/${id}`,
+
+                        {
+
+                            method: "PUT",
+
+                            headers: {
+
+                                "Content-Type": "application/json",
+
+                                Authorization: `Bearer ${token}`
+
+                            },
+
+                            body: JSON.stringify({
+
+                                price
+
+                            })
+
+                        }
+
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+
+                        throw new Error(data.message);
+
+                    }
+
+                    alert("Product updated successfully.");
+
+                    loadProducts();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert("Failed to update product.");
+
+                }
+
+            });
+
+        });
+
+    }
 
 
 
@@ -294,6 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Reload orders so statistics and table update
                     loadOrders();
+                    loadProducts();
 
                 } catch (error) {
 
