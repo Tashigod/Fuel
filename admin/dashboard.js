@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const totalOrders = document.getElementById("totalOrders");
     const totalRevenue = document.getElementById("totalRevenue");
+    const pendingOrders = document.getElementById("pendingOrders");
+    const deliveredOrders = document.getElementById("deliveredOrders");
+    const totalCustomers = document.getElementById("totalCustomers");
 
     const orderModal = document.getElementById("orderModal");
     const closeModal = document.getElementById("closeModal");
@@ -108,11 +111,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         let revenue = 0;
+        let pending = 0;
+        let delivered = 0;
+        let customers = new Set();
 
 
 
         orders.forEach(order => {
+            if(order.status === "pending"){
+             pending++;
+            }
 
+
+            if(order.status === "delivered"){
+                delivered++;
+            }
+
+
+            if(order.address.email){
+
+                customers.add(order.address.email);
+
+            }
 
             revenue += Number(order.total);
 
@@ -227,6 +247,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         totalRevenue.textContent =
             "₦" + revenue.toLocaleString();
+        pendingOrders.textContent = pending;
+
+        deliveredOrders.textContent = delivered;
+
+        totalCustomers.textContent =
+        customers.size;
 
 
 
