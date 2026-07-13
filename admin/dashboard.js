@@ -128,52 +128,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // =========================
-    // DISPLAY PRODUCTS
-    // =========================
-
     function displayProducts(products) {
-        console.log(products);
 
-        productsTable.innerHTML = "";
+    console.log("Products:", products);
+    console.log("productsTable:", productsTable);
 
-        products.forEach(product => {
+    productsTable.innerHTML = `
+        <tr>
+            <td colspan="4">TEST SUCCESS</td>
+        </tr>
+    `;
 
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-
-                <td>${product.name}</td>
-
-                <td>${product.unit}</td>
-
-                <td>
-
-                    <input
-                        type="number"
-                        value="${product.price}"
-                        id="price-${product.id}"
-                    >
-
-                </td>
-
-                <td>
-
-                    <button
-                        class="save-btn"
-                        data-id="${product.id}">
-
-                        Save
-
-                    </button>
-
-                </td>
-
-            `;
-
-            productsTable.appendChild(row);
-
-        });
+}
 
 
 
@@ -239,9 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         });
-
-    }
-
 
 
     // =========================
