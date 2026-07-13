@@ -1,29 +1,36 @@
 const API_BASE = "https://fuel-xxa4.onrender.com";
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const token = localStorage.getItem("adminToken");
     const username = localStorage.getItem("adminUsername");
 
+
     const adminName = document.getElementById("adminName");
     const logoutBtn = document.getElementById("logoutBtn");
 
     const ordersTable = document.getElementById("ordersTable");
+
     const totalOrders = document.getElementById("totalOrders");
     const totalRevenue = document.getElementById("totalRevenue");
 
+    const orderModal = document.getElementById("orderModal");
+    const closeModal = document.getElementById("closeModal");
+    const orderDetails = document.getElementById("orderDetails");
+
 
     // =========================
-    // CHECK ADMIN LOGIN
+    // CHECK LOGIN
     // =========================
 
     if (!token) {
+
         window.location.href = "login.html";
         return;
+
     }
 
-
-    // Display username
 
     adminName.textContent = username || "Admin";
 
@@ -42,45 +49,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+
     // =========================
-    // FETCH ORDERS
+    // LOAD ORDERS
     // =========================
 
-    async function fetchOrders() {
+    async function loadOrders() {
 
         try {
 
-            const response = await fetch(`${API_BASE}/api/orders`, {
-
-                method: "GET",
-
-                headers: {
-                    Authorization: `Bearer ${token}`
+            const response = await fetch(
+                `${API_BASE}/api/orders`,
+                {
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
                 }
-
-            });
+            );
 
 
             const orders = await response.json();
 
 
-            if (!Array.isArray(orders)) {
-
-                throw new Error("Orders data is not valid");
-
-            }
+            displayOrders(orders);
 
 
-            updateDashboard(orders);
+        } catch(error){
 
+            console.error(
+                "Failed loading orders:",
+                error
+            );
 
-        } catch (error) {
-
-            console.error("Error loading orders:", error);
 
             ordersTable.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         Failed to load orders
                     </td>
                 </tr>
@@ -92,11 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
     // =========================
-    // UPDATE DASHBOARD
+    // DISPLAY ORDERS
     // =========================
 
-    function updateDashboard(orders) {
+    function displayOrders(orders){
 
 
         ordersTable.innerHTML = "";
@@ -105,87 +110,276 @@ document.addEventListener("DOMContentLoaded", () => {
         let revenue = 0;
 
 
+
         orders.forEach(order => {
 
 
             revenue += Number(order.total);
 
 
+
             const customer =
-                order.address?.email ||
-                order.address?.phone ||
-                "Unknown";
+                order.address.email || "Unknown";
+
+
+
+            const products =
+                order.items.map(item => {
+
+                    return `${item.name} x${item.quantity}`;
+
+                }).join(", ");
+
 
 
             const row = document.createElement("tr");
 
 
+
             row.innerHTML = `
 
-                <td>${order.id}</td>
-
-                <td>${customer}</td>
-
                 <td>
-                    ₦${Number(order.total).toLocaleString()}
+                    #${order.id}
                 </td>
 
-                <td>
-                    ${
-                        order.created_at
-                        ? new Date(order.created_at).toLocaleDateString()
-                        : "N/A"
-                    }
-                </td>
 
                 <td>
-                    ${order.status}
+                    ${customer}
                 </td>
 
+
                 <td>
+                    ${products}
+                </td>
+
+
+                <td>
+                    ₦${Number(order.total)
+                    .toLocaleString()}
+                </td>
+
+
+                <td>
+                    ${new Date(order.date)
+                    .toLocaleDateString()}
+                </td>
+
+
+                <td>
+                    ${order.status || "pending"}
+                </td>
+
+
+                <td>
+
                     <button 
                     class="view-btn"
                     onclick="viewOrder(${order.id})">
-                        View
+
+                    View
+
                     </button>
+
                 </td>
 
             `;
 
 
+
             ordersTable.appendChild(row);
+
 
 
         });
 
 
-        // Update statistics
 
-        totalOrders.textContent = orders.length;
+        totalOrders.textContent =
+            orders.length;
+
 
 
         totalRevenue.textContent =
             "₦" + revenue.toLocaleString();
 
 
+
+        // Store orders for modal
+
+        window.allOrders = orders;
+
+
     }
 
 
 
-    fetchOrders();
+
+
+    // =========================
+    // CLOSE MODAL
+    // =========================
+
+    if(closeModal){
+
+        closeModal.onclick = () => {
+
+            orderModal.classList.remove("show");
+
+        };
+
+    }
+
+
+
+    // Close clicking outside
+
+    if(orderModal){
+
+        orderModal.onclick = (e)=>{
+
+            if(e.target === orderModal){
+
+                orderModal.classList.remove("show");
+
+            }
+
+        };
+
+    }
+
+
+
+    loadOrders();
 
 
 });
 
 
+
+
+
 // =========================
-// VIEW ORDER
+// VIEW ORDER DETAILS
 // =========================
 
-function viewOrder(id) {
+function viewOrder(id){
 
-    alert(
-        `Viewing order #${id}\n\nOrder details popup can be added here.`
-    );
+
+    const order =
+        window.allOrders.find(
+            order => order.id === id
+        );
+
+
+
+    if(!order) return;
+
+
+
+    const address = order.address;
+
+
+
+    const products = order.items.map(item=>{
+
+
+        return `
+
+        <div>
+
+            ${item.name}
+
+            -
+            ${item.quantity}
+
+            x ₦${Number(item.price)
+            .toLocaleString()}
+
+        </div>
+
+        `;
+
+
+    }).join("");
+
+
+
+    document.getElementById("orderDetails").innerHTML = `
+
+
+        <h3>
+            Order #${order.id}
+        </h3>
+
+
+        <p>
+            <strong>Email:</strong>
+            ${address.email}
+        </p>
+
+
+        <p>
+            <strong>Phone:</strong>
+            ${address.phone}
+        </p>
+
+
+        <p>
+            <strong>Address:</strong>
+
+            ${address.street},
+            ${address.city},
+            ${address.state}
+
+        </p>
+
+
+        <h3>
+            Products
+        </h3>
+
+
+        <div class="order-products">
+
+            ${products}
+
+        </div>
+
+
+
+        <p>
+            <strong>Total:</strong>
+
+            ₦${Number(order.total)
+            .toLocaleString()}
+
+        </p>
+
+
+        <p>
+            <strong>Date:</strong>
+
+            ${new Date(order.date)
+            .toLocaleString()}
+
+        </p>
+
+
+        <p>
+            <strong>Status:</strong>
+
+            ${order.status}
+
+        </p>
+
+
+    `;
+
+
+
+    document
+    .getElementById("orderModal")
+    .classList.add("show");
+
 
 }
