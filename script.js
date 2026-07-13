@@ -15,7 +15,41 @@ document.addEventListener('DOMContentLoaded', () => {
     let cart = [];
     let total = 0;
 
-    const API_BASE = 'https://fuel-xxa4.onrender.com';
+    const API_BASE = "https://fuel-xxa4.onrender.com";
+
+    async function loadProducts() {
+
+        try {
+
+            const response = await fetch(`${API_BASE}/api/products`);
+            const products = await response.json();
+
+            products.forEach(product => {
+
+                const card = document.querySelector(
+                    `.product[data-id="${product.id}"]`
+                );
+
+                if (!card) return;
+
+                // Update the price used by the cart
+                card.dataset.price = product.price;
+
+                // Update the text shown to the customer
+                const priceText = card.querySelector("p");
+
+                priceText.textContent =
+                    `₦${Number(product.price).toLocaleString()} / ${product.unit}`;
+
+            });
+
+        } catch (error) {
+
+            console.error("Failed to load products:", error);
+
+        }
+
+    }
 
     console.log("Script Loaded");
 
@@ -311,5 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     });
+    loadProducts();
 
 });

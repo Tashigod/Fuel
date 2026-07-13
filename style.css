@@ -373,7 +373,7 @@ header h1{
 
 #address-form{
 
-    display:flex;
+    display:none;
 
     flex-direction:column;
 
