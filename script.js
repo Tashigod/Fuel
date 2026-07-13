@@ -38,21 +38,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update cart UI
     function updateCart() {
-        cartItems.innerHTML = '';
-        total = 0;
+    cartItems.innerHTML = '';
+    total = 0;
 
-        cart.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = `${item.name} x${item.quantity} - ₦${(item.price * item.quantity).toFixed(2)}`;
-            cartItems.appendChild(li);
-            total += item.price * item.quantity;
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+
+        total += item.price * item.quantity;
+
+        li.innerHTML = `
+            <span>
+                ${item.name} x${item.quantity} - ₦${(item.price * item.quantity).toLocaleString()}
+            </span>
+
+            <button class="remove-item" data-index="${index}">
+                ❌ Remove
+            </button>
+        `;
+
+        cartItems.appendChild(li);
+    });
+
+    totalSpan.textContent = total.toLocaleString();
+
+    addressForm.style.display = cart.length > 0 ? 'block' : 'none';
+
+    // Remove item button
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = parseInt(button.dataset.index);
+
+            cart.splice(index, 1);
+
+            updateCart();
         });
-
-        totalSpan.textContent = total.toFixed(2);
-
-        addressForm.style.display = cart.length > 0 ? 'block' : 'none';
-    }
-
+    });
+}
     // Checkout
     checkoutBtn.addEventListener('click', async () => {
         console.log('Checkout clicked');
