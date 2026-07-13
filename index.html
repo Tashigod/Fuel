@@ -4,58 +4,187 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crude Oil Products Order App</title>
+
     <link rel="stylesheet" href="style.css">
-    <script src="https://js.stripe.com/v3/"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
+
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
+    <!-- Header -->
     <header>
-        <h1>Crude Oil Products Order App</h1>
+
+        <h1>Fuel Order</h1>
+
+        <button id="cart-button">
+            🛒 Cart
+            <span id="cart-count">0</span>
+        </button>
+
     </header>
+
+    <!-- Slide Cart -->
+    <aside id="cart-panel">
+
+        <div class="cart-header">
+
+            <h2>Your Cart</h2>
+
+            <button id="close-cart">
+                ✖
+            </button>
+
+        </div>
+
+        <ul id="cart-items"></ul>
+
+        <h3 class="total-price">
+            Total: ₦<span id="total">0.00</span>
+        </h3>
+
+        <div id="address-form" style="display:none;">
+
+            <h3>Delivery Address</h3>
+
+            <input
+                type="text"
+                id="street"
+                placeholder="Street Address"
+                required>
+
+            <input
+                type="text"
+                id="city"
+                placeholder="City"
+                required>
+
+            <input
+                type="text"
+                id="state"
+                placeholder="State"
+                required>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Phone Number"
+                required>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                required>
+
+            <button id="checkout">
+                Proceed to Checkout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- Products -->
+
     <main>
+
+        <h2 class="title">
+            Available Products
+        </h2>
+
         <section id="products">
-            <h2>Select Products</h2>
-            <div class="product" data-name="Petrol" data-price=" 1250">
-                <h3>Petrol</h3>
-                <p>Price:  ₦1250 per liter</p>
-                <input type="number" min="1" value="1" class="quantity">
-                <button class="add-to-cart">Add to Cart</button>
+
+            <div class="product"
+                data-name="Petrol"
+                data-price="1250">
+
+                <h3>⛽ Petrol</h3>
+
+                <p>₦1250 / Liter</p>
+
+                <input
+                    type="number"
+                    class="quantity"
+                    min="1"
+                    value="1">
+
+                <button class="add-to-cart">
+                    Add To Cart
+                </button>
+
             </div>
-            <div class="product" data-name="Kerosene" data-price="1500">
-                <h3>Kerosene</h3>
-                <p>Price:  ₦1500 per liter</p>
-                <input type="number" min="1" value="1" class="quantity">
-                <button class="add-to-cart">Add to Cart</button>
+
+            <div class="product"
+                data-name="Diesel"
+                data-price="1550">
+
+                <h3>🚛 Diesel</h3>
+
+                <p>₦1550 / Liter</p>
+
+                <input
+                    type="number"
+                    class="quantity"
+                    min="1"
+                    value="1">
+
+                <button class="add-to-cart">
+                    Add To Cart
+                </button>
+
             </div>
-            <div class="product" data-name="Diesel" data-price=" 1550">
-                <h3>Diesel</h3>
-                <p>Price:  ₦1550 per liter</p>
-                <input type="number" min="1" value="1" class="quantity">
-                <button class="add-to-cart">Add to Cart</button>
+
+            <div class="product"
+                data-name="Kerosene"
+                data-price="1500">
+
+                <h3>🔥 Kerosene</h3>
+
+                <p>₦1500 / Liter</p>
+
+                <input
+                    type="number"
+                    class="quantity"
+                    min="1"
+                    value="1">
+
+                <button class="add-to-cart">
+                    Add To Cart
+                </button>
+
             </div>
-            <div class="product" data-name="Cooking Gas" data-price=" 1500">
-                <h3>Cooking Gas</h3>
-                <p>Price:  ₦1500 per kg</p>
-                <input type="number" min="1" value="1" class="quantity">
-                <button class="add-to-cart">Add to Cart</button>
+
+            <div class="product"
+                data-name="Cooking Gas"
+                data-price="1500">
+
+                <h3>🛢 Cooking Gas</h3>
+
+                <p>₦1500 / KG</p>
+
+                <input
+                    type="number"
+                    class="quantity"
+                    min="1"
+                    value="1">
+
+                <button class="add-to-cart">
+                    Add To Cart
+                </button>
+
             </div>
+
         </section>
-        <!-- ... (rest of the file remains the same) -->
-<section id="cart">
-    <h2>Your Cart</h2>
-    <ul id="cart-items"></ul>
-    <p>Total: ₦<span id="total">0.00</span></p>
-    <div id="address-form" style="display: none;">
-        <h3>Delivery Address</h3>
-        <input type="text" id="street" placeholder="Street Address" required>
-        <input type="text" id="city" placeholder="City" required>
-        <input type="text" id="state" placeholder="State" required>
-        <input type="tel" id="phone" placeholder="Phone Number" required>
-        <input type="email" id="email" placeholder="Email" required>  <!-- New: For Paystack -->
-    </div>
-    <button id="checkout">Checkout</button>
-</section>
-<!-- ... (rest of the file remains the same) -->
+
     </main>
+
     <script src="script.js"></script>
+
 </body>
 </html>
