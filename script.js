@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         totalSpan.textContent = total.toLocaleString();
 
         addressForm.style.display =
-            cart.length > 0 ? "block" : "none";
+            cart.length > 0 ? "flex" : "none";
 
         // Update badge
         cartCount.textContent =
