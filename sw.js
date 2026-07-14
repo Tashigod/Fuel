@@ -51,37 +51,40 @@ self.addEventListener("fetch", event => {
 
     if (event.request.method !== "GET") return;
 
+    // Ignore Chrome/Edge extension requests
+    if (!event.request.url.startsWith("http")) return;
+
     event.respondWith(
 
         fetch(event.request)
 
             .then(response => {
 
-                const responseClone = response.clone();
+                // Only cache successful responses
+                if (response.status === 200) {
 
-                caches.open(CACHE_NAME)
-                    .then(cache => {
-                        cache.put(event.request, responseClone);
-                    });
+                    const responseClone = response.clone();
+
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            cache.put(event.request, responseClone);
+                        });
+
+                }
 
                 return response;
 
             })
 
-            .catch(() => {
+            .catch(async () => {
 
-                return caches.match(event.request)
-                    .then(response => {
+                const cached = await caches.match(event.request);
 
-                        if (response) {
-                            return response;
-                        }
+                if (cached) return cached;
 
-                        if (event.request.mode === "navigate") {
-                            return caches.match("/offline.html");
-                        }
-
-                    });
+                if (event.request.mode === "navigate") {
+                    return caches.match("/offline.html");
+                }
 
             })
 
