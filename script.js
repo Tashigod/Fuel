@@ -26,6 +26,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let cart = [];
     let total = 0;
 
+    /* =========================
+     OFFLINE ORDER STORAGE
+    ========================= */
+
+    function openDB() {
+
+        return new Promise((resolve, reject) => {
+
+            const request = indexedDB.open("FuelOrderDB", 1);
+
+            request.onupgradeneeded = () => {
+
+                const db = request.result;
+
+                if (!db.objectStoreNames.contains("orders")) {
+
+                    db.createObjectStore("orders", {
+                        autoIncrement: true
+                    });
+
+                }
+
+            };
+
+            request.onsuccess = () => resolve(request.result);
+
+            request.onerror = () => reject(request.error);
+
+        });
+
+    }
+
+    async function saveOfflineOrder(order) {
+
+        const db = await openDB();
+
+        const tx = db.transaction("orders", "readwrite");
+
+        tx.objectStore("orders").add(order);
+
+    }
+
     const API_BASE = "https://fuel-xxa4.onrender.com";
 
     async function loadProducts() {
@@ -248,11 +290,29 @@ document.addEventListener('DOMContentLoaded', () => {
     checkoutBtn.addEventListener('click', async () => {
         if (!navigator.onLine) {
 
-            alert("You're offline.\nReconnect to place your order.");
+            await saveOfflineOrder({
+
+                cart,
+
+                total,
+
+                address: {
+                    street,
+                    city,
+                    state,
+                    phone,
+                    email
+                }
+
+            });
+
+            alert(
+                "No internet.\n\nYour order has been saved and will be sent automatically when you're back online."
+            );
 
             return;
 
-}
+        }
 
         if (cart.length === 0) {
 
@@ -363,7 +423,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     });
+    async function syncOfflineOrders() {
+
+    if (!navigator.onLine) return;
+
+    const db = await openDB();
+
+    const tx = db.transaction("orders", "readwrite");
+
+    const store = tx.objectStore("orders");
+
+    const request = store.getAll();
+
+    request.onsuccess = async () => {
+
+        const orders = request.result;
+
+        if (orders.length === 0) return;
+
+        console.log("Syncing offline orders...");
+
+        for (const order of orders) {
+
+            try {
+
+                await fetch(`${API_BASE}/store-order`, {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type": "application/json"
+
+                    },
+
+                    body: JSON.stringify(order)
+
+                });
+
+            } catch {
+
+                return;
+
+            }
+
+        }
+
+        store.clear();
+
+        console.log("Offline orders synced.");
+
+    };
+
+}
+
+window.addEventListener("online", syncOfflineOrders);
     loadProducts();
+    syncOfflineOrders();
 
 });
 if ("serviceWorker" in navigator) {
