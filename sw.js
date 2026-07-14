@@ -51,42 +51,37 @@ self.addEventListener("fetch", event => {
 
     if (event.request.method !== "GET") return;
 
-    // Ignore Chrome/Edge extension requests
     if (!event.request.url.startsWith("http")) return;
 
     event.respondWith(
 
-        fetch(event.request)
+        caches.match(event.request).then(cached => {
 
-            .then(response => {
+            const networkFetch = fetch(event.request)
 
-                // Only cache successful responses
-                if (response.status === 200) {
+                .then(response => {
 
-                    const responseClone = response.clone();
+                    if (response && response.status === 200) {
 
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseClone);
+                        const copy = response.clone();
+
+                        caches.open(CACHE_NAME).then(cache => {
+
+                            cache.put(event.request, copy);
+
                         });
 
-                }
+                    }
 
-                return response;
+                    return response;
 
-            })
+                })
 
-            .catch(async () => {
+                .catch(() => cached);
 
-                const cached = await caches.match(event.request);
+            return cached || networkFetch;
 
-                if (cached) return cached;
-
-                if (event.request.mode === "navigate") {
-                    return caches.match("/offline.html");
-                }
-
-            })
+        })
 
     );
 

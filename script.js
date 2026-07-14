@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener("offline", () => {
+
+        alert("You're offline.\nYou can still browse products, but checkout is unavailable.");
+
+    });
+
+    window.addEventListener("online", () => {
+
+        alert("You're back online!");
+
+    });
 
     const cartItems = document.getElementById('cart-items');
     const totalSpan = document.getElementById('total');
@@ -235,6 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===============================
 
     checkoutBtn.addEventListener('click', async () => {
+        if (!navigator.onLine) {
+
+            alert("You're offline.\nReconnect to place your order.");
+
+            return;
+
+}
 
         if (cart.length === 0) {
 
