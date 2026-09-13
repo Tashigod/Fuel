@@ -479,9 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     // Reload orders so statistics and table update
-                    loadOrders();
-                    loadProducts();
-
+                    await loadOrders();
                 } catch (error) {
 
                     console.error(error);
