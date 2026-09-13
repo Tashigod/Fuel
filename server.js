@@ -30,22 +30,17 @@ const dbConfig = {
     connectTimeout: 20000
 };
 
-let db;
-
 /* =========================
    CONNECT DB (SAFE RETRY)
 ========================= */
-async function connectDB() {
-    try {
-        db = await mysql.createConnection(dbConfig);
-        console.log('✅ Connected to MySQL');
-    } catch (err) {
-        console.error('❌ DB connection failed:', err.message);
-        console.log('🔄 Retrying in 5 seconds...');
-        setTimeout(connectDB, 5000);
-    }
-}
-connectDB();
+const db = mysql.createPool({
+    ...dbConfig,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
+console.log('✅ MySQL connection pool created');
 
 /* =========================
    HOME ROUTE
