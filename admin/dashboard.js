@@ -478,8 +478,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         throw new Error(data.message || "Update failed");
                     }
 
-                    // Reload orders so statistics and table update
+                    // Reload orders without using cached data
                     await loadOrders();
+
                 } catch (error) {
 
                     console.error(error);
