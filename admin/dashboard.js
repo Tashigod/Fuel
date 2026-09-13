@@ -197,11 +197,15 @@ document.addEventListener("DOMContentLoaded", () => {
                             })
                         }
                     );
+                    
 
                     const data = await response.json();
 
-                    if(!response.ok || !data.success){
-                        throw new Error(data.message);
+                    console.log("STATUS UPDATE RESPONSE:", response.status);
+                    console.log("STATUS UPDATE DATA:", data);
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || "Update failed");
                     }
 
                     alert("Product updated.");
