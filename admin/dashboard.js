@@ -1,4 +1,3 @@
-console.log("🔥 DASHBOARD.JS IS RUNNING");
 const API_BASE = "https://fuel-xxa4.onrender.com";
 
 
@@ -76,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const orders = await response.json();
 
-            console.log("ORDERS AFTER RELOAD:", orders);
 
             displayOrders(orders);
 
@@ -205,9 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     
 
                     const data = await response.json();
-
-                    console.log("STATUS UPDATE RESPONSE:", response.status);
-                    console.log("STATUS UPDATE DATA:", data);
 
                     if (!response.ok || !data.success) {
                         throw new Error(data.message || "Update failed");
@@ -465,8 +460,6 @@ document.addEventListener("DOMContentLoaded", () => {
             select.addEventListener("change", async () => {
 
                 const id = select.dataset.id;
-
-                console.log("🔥 STATUS CHANGED:", id, select.value);
 
                 try {
 
