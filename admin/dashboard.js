@@ -63,10 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
 
             const response = await fetch(
-                `${API_BASE}/api/orders`,
+                `${API_BASE}/api/orders?t=${Date.now()}`,
                 {
-                    headers:{
-                        Authorization:`Bearer ${token}`
+                    cache: "no-store",
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
