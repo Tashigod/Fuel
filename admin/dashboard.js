@@ -1,3 +1,4 @@
+console.log("🔥 DASHBOARD.JS IS RUNNING");
 const API_BASE = "https://fuel-xxa4.onrender.com";
 
 
@@ -74,6 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             const orders = await response.json();
+
+            console.log("ORDERS AFTER RELOAD:", orders);
+
+            displayOrders(orders);
 
 
             displayOrders(orders);
