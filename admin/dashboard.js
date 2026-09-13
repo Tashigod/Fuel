@@ -466,6 +466,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const id = select.dataset.id;
 
+                console.log("🔥 STATUS CHANGED:", id, select.value);
+
                 try {
 
                     const response = await fetch(
